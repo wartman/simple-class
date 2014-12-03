@@ -1,0 +1,27 @@
+{
+  "name": "simple-class",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "A simple class implementation",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wartman/util"
+  },
+  "author": "wartman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wartman/util/issues"
+  },
+  "homepage": "https://github.com/wartman/util",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "gulp": "^3.8.10",
+    "gulp-mocha": "^1.1.1"
+  }
+}
