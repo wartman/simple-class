@@ -55,19 +55,19 @@
   Class.extend = function extend(_instance, _static) {
     _instance = _instance || {}
     var _parent = this
-    var Class = (_instance.hasOwnProperty('constructor'))
+    var SubClass = (_instance.hasOwnProperty('constructor'))
       ? _instance.constructor
       : function () { return _parent.apply(this, arguments) }
-    Class.prototype = create(_parent.prototype)
-    mixin(Class, _parent) // Add static methods from the parent
-    mixin(Class, _static)
-    mixin(Class.prototype, _instance)
-    Class.prototype.constructor = Class
-    Class._parent = _parent
-    Class._super = superMethod(Class, false)
-    Class.prototype._super = superMethod(Class, true)
-    Class.extend = extend
-    return Class
+    SubClass.prototype = create(_parent.prototype)
+    mixin(SubClass, _parent) // Add static methods from the parent
+    mixin(SubClass, _static)
+    mixin(SubClass.prototype, _instance)
+    SubClass.prototype.constructor = SubClass
+    SubClass._parent = _parent
+    SubClass._super = superMethod(SubClass, false)
+    SubClass.prototype._super = superMethod(SubClass, true)
+    SubClass.extend = extend
+    return SubClass
   }
 
   return Class

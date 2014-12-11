@@ -2,6 +2,9 @@ Simple Class
 ============
 
 ```javascript
+
+var Class = require('simple-class')
+
 var Foo = Class.extend({
 
   constructor: function Foo(foo) {
@@ -13,7 +16,7 @@ var Foo = Class.extend({
 var SubFoo = Foo.extend({
   
   constructor: function SubFoo() {
-    this._super('constructor', 'bar')
+    this._super('bar')
   }
 
 })

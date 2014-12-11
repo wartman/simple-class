@@ -1,6 +1,6 @@
 {
   "name": "simple-class",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": "true",
   "description": "A simple class implementation",
   "directories": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wartman/util"
+    "url": "https://github.com/wartman/simple-class"
   },
   "author": "wartman",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wartman/util/issues"
+    "url": "https://github.com/wartman/simple-class/issues"
   },
-  "homepage": "https://github.com/wartman/util",
+  "homepage": "https://github.com/wartman/simple-class",
   "devDependencies": {
     "expect.js": "^0.3.1",
     "gulp": "^3.8.10",
