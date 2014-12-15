@@ -7,7 +7,7 @@ var Class = require('simple-class')
 
 var Foo = Class.extend({
 
-  init: function Foo(foo) {
+  constructor: function Foo(foo) {
     this.foo = foo
   }
 
@@ -15,7 +15,7 @@ var Foo = Class.extend({
 
 var SubFoo = Foo.extend({
   
-  init: function SubFoo() {
+  constructor: function SubFoo() {
     this._super('bar')
   }
 

@@ -50,7 +50,7 @@
     obj[key] = method
   }
 
-  // Extend an object. Passing more then one `source` will apply them all to 'this'
+  // Extend an object.
   function mixin(dest, source) {
     for (var key in source) {
       if (source.hasOwnProperty(key)) {
@@ -69,17 +69,16 @@
   // Extend and create a new class from the current one.
   Class.extend = function extend(_instance, _static) {
     _instance = _instance || {}
-    // Don't set constructors directly! Alias them to init
-    // if the user did this (it should work like they expect)
+    // Alias the constructor
     if (_instance.hasOwnProperty('constructor')) {
-      var init = _instance.constructor
-      _instance.init = init
+      var __constructor = _instance.constructor
+      _instance.__constructor = __constructor
       delete _instance.constructor
     }
     var _parent = this
     var SubClass = function Class() { // Named for prettier console logging
       this._super = function () {} // Default super method
-      if (this.init) this.init.apply(this, arguments)
+      if (this.__constructor) this.__constructor.apply(this, arguments)
     }
     SubClass.prototype = create(_parent.prototype)
     SubClass._super = function () {} // Default Super method
@@ -90,7 +89,10 @@
     SubClass.extend = extend
     // A more useful toString method
     SubClass.toString = function () {
-      return (this.prototype.init)? this.prototype.init.toString() : '[Class]'
+      return (this.prototype.__constructor)? this.prototype.__constructor.toString() : '[Class]'
+    }
+    SubClass.valueOf = function () {
+      return (this.prototype.__constructor)? this.prototype.__constructor.valueOf() : Object.valueOf()
     }
     return SubClass
   }

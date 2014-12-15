@@ -6,7 +6,7 @@ describe('Class', function () {
   var Base
   beforeEach(function () {
     Base = Class.extend({
-      init: function (n) {
+      constructor: function (n) {
         this.n = n
       }
     })
@@ -16,7 +16,7 @@ describe('Class', function () {
 
     it('creates a new class', function () {
       var Test = Class.extend({
-        init: function () {
+        constructor: function () {
           this.foo = 'foo'
         }
       })
@@ -29,7 +29,7 @@ describe('Class', function () {
 
     it('inherits instance methods', function () {
       var Test = Class.extend({
-        init: function (foo) {
+        constructor: function (foo) {
           this.setFoo(foo)
         },
         getFoo: function () {
@@ -50,7 +50,7 @@ describe('Class', function () {
 
     it('inherits static methods', function () {
       var Test = Class.extend({
-        init: function (foo) {
+        constructor: function (foo) {
           this.setFoo(foo)
         },
         getFoo: function () {
@@ -72,36 +72,36 @@ describe('Class', function () {
       expect(Test.getStaticFoo()).to.equal('foo')
     })
 
-    it('aliases `constructor` to `init` in new classes', function () {
+    it('aliases `constructor` to `__constructor` in new classes', function () {
       var constructor = function () {
         this.foo = 'foo'
       }
       var Test = Class.extend({
         constructor: constructor
       })
-      expect(Test.prototype.init).to.equal(constructor)
+      expect(Test.prototype.__constructor).to.equal(constructor)
       var test = new Test()
       expect(test.foo).to.equal('foo')
     })
 
-    it('does not call constructor/init twice', function (done) {
+    it('does not call constructor twice', function (done) {
       var called = 0
       var timer = setTimeout(function () {
         expect(called).to.equal(1)
         done()
       }, 200)
       var Base = Class.extend({
-        init: function () {
+        constructor: function () {
           called += 1
         }
       })
       new Base()
     })
 
-    it('does not call first class\' init when extending', function () {
+    it('does not call first class\' constructor when extending', function () {
       var called = 0
       var Base = Class.extend({
-        init: function () {
+        constructor: function () {
           called += 1
         }
       })
@@ -112,17 +112,17 @@ describe('Class', function () {
     it('doesn\'t bubble constructor to sub-classes', function () {
       var called = 0
       var Foo = Class.extend({
-        init: function() {
+        constructor: function() {
           called += 1
         }
       })
       var Bar = Foo.extend({
-        init: function() {
+        constructor: function() {
           called += 1
         }
       })
       var Baz = Bar.extend({
-        init: function() {
+        constructor: function() {
           called += 1
         }
       })
@@ -138,12 +138,12 @@ describe('Class', function () {
         done()
       }, 200)
       var Base = Class.extend({
-        init: function () {
+        constructor: function () {
           called += 1
         }
       })
       var Sub = Base.extend()
-      expect(Sub.prototype.init).to.equal(Base.prototype.init)
+      expect(Sub.prototype._constructor).to.equal(Base.prototype._constructor)
       new Sub()
     })
 
@@ -166,7 +166,7 @@ describe('Class', function () {
 
     it('can access constructor within constructor', function () {
       var Base = Class.extend({
-        init: function () {
+        constructor: function () {
           expect(this.constructor.foo).to.equal('foo')
         }
       }, {
@@ -200,18 +200,18 @@ describe('Class', function () {
     it('does not endlessly loop', function () {
       var _called = ''
       var Test = Class.extend({
-        init: function () {
+        constructor: function () {
           _called += 'first'
         }
       })
       var SubTest = Test.extend({
-        init: function () {
+        constructor: function () {
           _called += 'second'
           this._super()
         }
       })
       var SubSubTest = SubTest.extend({
-        init: function () {
+        constructor: function () {
           _called += 'last'
           this._super()
         }
@@ -222,7 +222,7 @@ describe('Class', function () {
 
     it('passes arguments to super calls', function () {
       var Test = Class.extend({
-        init: function (foo) {
+        constructor: function (foo) {
           this.setFoo(foo)
         },
         getFoo: function (append) {
@@ -233,7 +233,7 @@ describe('Class', function () {
         }
       })
       var TestTwo = Test.extend({
-        init: function () {
+        constructor: function () {
           this._super('foo')
         },
         getFoo: function () {
@@ -254,7 +254,7 @@ describe('Class', function () {
         }
       })
       var Sub = Base.extend({
-        init: function () {
+        constructor: function () {
           constructTimes += 1
           expect(constructTimes).to.equal(1)
         },
@@ -265,7 +265,7 @@ describe('Class', function () {
         }
       })
       var SubTwo = Sub.extend({
-        init: function () {
+        constructor: function () {
           this._super()
           constructTimes += 1
           expect(constructTimes).to.equal(2)
@@ -341,7 +341,7 @@ describe('Class', function () {
 
     it('does not exceed max-call-stack when calling toString on constructor', function () {
       var Test = Class.extend({
-        init: function (n) {
+        constructor: function (n) {
           this.foo = n
         },
         bar: function () {
@@ -349,12 +349,12 @@ describe('Class', function () {
         }
       })
       var TestTwo = Test.extend({
-        init: function (n) {
+        constructor: function (n) {
           this.sup(n)
         }
       })
       var TestThree = TestTwo.extend({
-        init: function (n) {
+        constructor: function (n) {
           this.sup(n)
         },
         bar: function () {
@@ -376,11 +376,11 @@ describe('Class', function () {
         this.hello = this.hello
       }
       var Test = Class.extend({
-        init: testConstructor
+        constructor: testConstructor
       })
       var TestTwo = Test.extend()
       var TestThree = TestTwo.extend({
-        init: extendedConstructor
+        constructor: extendedConstructor
       })
       expect(Test.toString()).to.equal(testConstructor.toString())
       expect(TestTwo.toString()).to.equal(testConstructor.toString())
