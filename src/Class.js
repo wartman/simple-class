@@ -78,7 +78,7 @@
     var _parent = this
     var SubClass = function Class() { // Named for prettier console logging
       this._super = function () {} // Default super method
-      if (this.__constructor) this.__constructor.apply(this, arguments)
+      if (Class.prototype.__constructor) Class.prototype.__constructor.apply(this, arguments)
     }
     SubClass.prototype = create(_parent.prototype)
     SubClass._super = function () {} // Default Super method

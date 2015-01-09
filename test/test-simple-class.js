@@ -220,6 +220,60 @@ describe('Class', function () {
       expect(_called).to.equal('lastsecondfirst')
     })
 
+    it('does not exceed max-call-stack when calling constructor directly', function () {
+      var Test = Class.extend({
+        constructor: function (n) {
+          this.foo = n
+        },
+        bar: function () {
+          return this.foo + 'bar'
+        }
+      })
+      var TestTwo = Test.extend({
+        constructor: function (n) {
+          Test.call(this, n)
+        }
+      })
+      var TestThree = TestTwo.extend({
+        constructor: function (n) {
+          TestTwo.call(this, n)
+        },
+        bar: function () {
+          return this._super() + 'bin'
+        }
+      })
+      var test = new TestThree(5)
+      // If all is well, then no errors will have been thrown.
+      expect(true).to.be.true
+    })
+
+    it('does not exceed max-call-stack when calling constructor via #_super', function () {
+      var Test = Class.extend({
+        constructor: function (n) {
+          this.foo = n
+        },
+        bar: function () {
+          return this.foo + 'bar'
+        }
+      })
+      var TestTwo = Test.extend({
+        constructor: function (n) {
+          this._super(n)
+        }
+      })
+      var TestThree = TestTwo.extend({
+        constructor: function (n) {
+          this._super(n)
+        },
+        bar: function () {
+          return this._super() + 'bin'
+        }
+      })
+      var test = new TestThree(5)
+      // If all is well, then no errors will have been thrown.
+      expect(true).to.be.true
+    })
+
     it('passes arguments to super calls', function () {
       var Test = Class.extend({
         constructor: function (foo) {
@@ -350,15 +404,15 @@ describe('Class', function () {
       })
       var TestTwo = Test.extend({
         constructor: function (n) {
-          this.sup(n)
+          this._super(n)
         }
       })
       var TestThree = TestTwo.extend({
         constructor: function (n) {
-          this.sup(n)
+          this._super(n)
         },
         bar: function () {
-          return this.sup() + 'bin'
+          return this._super() + 'bin'
         }
       })  
       TestTwo.toString()
